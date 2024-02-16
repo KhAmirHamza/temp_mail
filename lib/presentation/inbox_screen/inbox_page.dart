@@ -19,6 +19,7 @@ class _InboxPageState extends State<InboxPage> {
 
     @override
   Widget build(BuildContext context) {
+    context.read<InboxCubit>().fetchInboxes(widget.token);
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text("Temp Mail",
@@ -37,6 +38,7 @@ class _InboxPageState extends State<InboxPage> {
             else if(state is InboxFailedState){
              //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("LogIn Failed!"),));
              CustomDialog.showGeneralDialog(context, "Inbox loading Failed!", state.message);
+             print("Inbox failed state");
             }
           },
           
@@ -90,6 +92,8 @@ class _InboxPageState extends State<InboxPage> {
                     ),
                   );
                 }),
+                if(state is InboxLoadingState)
+                const Center(child: CircularProgressIndicator(),)
               ],
             ),
                     ),

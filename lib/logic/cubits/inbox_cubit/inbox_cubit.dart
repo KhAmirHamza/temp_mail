@@ -9,12 +9,15 @@ class InboxCubit extends Cubit<InboxState>{
   InboxRepository inboxRepository = InboxRepository();
 
   void fetchInboxes(String token) async {
+    print("fetchInboxes called");
     try {
       emit(InboxLoadingState());
       Response response = await inboxRepository.fetchInboxs(token);
       if(response.statusCode == 200){
         List<dynamic> responseData = response.data;
         emit(InboxSuccessState(responseData.map((e) => inboxResponseModelFromJson(e)).toList()));
+      }else{
+        emit(InboxFailedState(response.statusMessage.toString()));
       }
     } on DioException catch (e) {
       emit(InboxFailedState(e.message.toString()));

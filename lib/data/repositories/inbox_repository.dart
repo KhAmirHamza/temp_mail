@@ -7,7 +7,13 @@ class InboxRepository{
 
   Future<Response> fetchInboxs(String token) async {
     try {
-      return await apiClient.sendRequest.get('/messages');
+      return await apiClient.sendRequest.get(
+        '/messages',
+         options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization":
+                "Bearer $token",
+          }));
     } catch (e) {
       rethrow;
     }
